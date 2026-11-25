@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ wine.title }} ({{ wine.year }}) - WINE VAULT{% endblock %}
+
+{% block content %}
+<div class="wine-detail-box">
+  <div class="wine-detail-layout">
+    <div class="wine-detail__image-box">
+      <img src="{% static wine.get_image_path %}" alt="{{ wine.title }}" class="wine-detail__img">
+    </div>
+
+    <div class="wine-detail__content">
+      <div class="wine-detail-header">
+        <div class="wine-card__top">
+          <h1 class="vault-title">{{ wine.title }}</h1>
+          <span class="wine-badge">{{ wine.get_wine_type_display }}</span>
+        </div>
+        <div class="wine-card__winery">{{ wine.winery }}</div>
+        <div class="wine-card__meta">{{ wine.region }} | Врожай: {{ wine.year }} р.</div>
+      </div>
+
+      <div class="wine-detail-meta-grid">
+        <div class="wine-detail-meta-item">
+          <span class="wine-detail-label">Сорт винограду</span>
+          <span class="wine-detail-value">{{ wine.grape }}</span>
+        </div>
+        <div class="wine-detail-meta-item">
+          <span class="wine-detail-label">Оцінка сомельє</span>
+          <span class="wine-detail-value">{{ wine.rating }} / 100</span>
+        </div>
+        <div class="wine-detail-meta-item">
+          <span class="wine-detail-label">Вартість пляшки</span>
+          <span class="wine-detail-value">&euro;{{ wine.price }}</span>
+        </div>
+        <div class="wine-detail-meta-item">
+          <span class="wine-detail-label">Зберігач (Сомельє)</span>
+          <span class="wine-detail-value">{{ wine.sommelier.username }}</span>
+        </div>
+      </div>
+
+      {% if wine.tasting_notes %}
+        <div class="wine-detail-notes">
+          <span class="wine-detail-label">Дегустаційні нотатки</span>
+          <p>{{ wine.tasting_notes|linebreaksbr }}</p>
+        </div>
+      {% endif %}
+
+      <div class="wine-detail-actions">
+        {% if user.is_authenticated and user == wine.sommelier %}
+          <a href="{% url 'wine-update' wine.pk %}" class="vault-btn-sm vault-btn-sm--edit">Редагувати запис</a>
+          <a href="{% url 'wine-delete' wine.pk %}" class="vault-btn-sm vault-btn-sm--delete">Списати з льоху</a>
+          <a href="{% url 'wine-list' %}" class="vault-btn-secondary">До мого льоху</a>
+        {% else %}
+          <a href="{% url 'index' %}" class="vault-btn-secondary">Назад до вітрини</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

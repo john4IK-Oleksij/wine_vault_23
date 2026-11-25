@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Вхід до Винного Склепу - WINE VAULT{% endblock %}
+
+{% block content %}
+<div class="vault-auth-container">
+  <div class="vault-card">
+    <h1 class="vault-card__title">Вхід до Склепу</h1>
+    <p class="vault-card__subtitle">Автентифікація сомельє та крафтових виноробів</p>
+
+    <form method="post" class="vault-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <input type="hidden" name="next" value="{{ next }}">
+
+      <button type="submit" class="vault-btn-primary">Увійти у сховище</button>
+    </form>
+
+    <p class="vault-card__footer">
+      Вперше у склепі?
+      <a href="{% url 'signup' %}" class="vault-link-highlight">Зареєструвати виноробню</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

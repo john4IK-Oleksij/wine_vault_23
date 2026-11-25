@@ -1,0 +1,791 @@
+/* WINE VAULT - Атмосфера Старовинного Винного Склепу */
+:root {
+  --bg-deep-stone: #0a0908;
+  --cask-oak: rgba(28, 25, 23, 0.92);
+  --amber-primary: #d97706;
+  --amber-glow: #f59e0b;
+  --amber-hover: #b45309;
+  --wine-tannin: #7f1d1d;
+  --text-parchment: #f5f5f4;
+  --text-muted: #a8a29e;
+  --border-amber: rgba(217, 119, 6, 0.3);
+  --shadow-vault: 0 16px 40px rgba(0, 0, 0, 0.6);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--bg-deep-stone);
+  background-image: 
+    linear-gradient(rgba(10, 9, 8, 0.88), rgba(10, 9, 8, 0.94)),
+    url('../img/cellar_bg.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+  color: var(--text-parchment);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Навігаційна панель */
+.vault-header {
+  background: rgba(18, 16, 14, 0.95);
+  border-bottom: 1px solid var(--border-amber);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.vault-nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.vault-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--amber-glow);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  transition: transform 0.2s ease, text-shadow 0.2s ease;
+}
+
+.vault-brand__logo {
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+  border-radius: 50%;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.4));
+}
+
+.vault-brand:hover {
+  text-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+  color: #fef3c7;
+}
+
+.vault-menu {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  list-style: none;
+}
+
+.vault-link {
+  color: var(--text-parchment);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 6px 13px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.vault-link:hover {
+  color: var(--amber-glow);
+  background: rgba(217, 119, 6, 0.12);
+}
+
+.vault-link--curator {
+  color: var(--amber-glow);
+  border: 1px solid var(--border-amber);
+  background: rgba(217, 119, 6, 0.08);
+}
+
+.vault-link--curator:hover {
+  background: rgba(217, 119, 6, 0.2);
+}
+
+.vault-user-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.vault-user-badge {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.vault-user-badge strong {
+  color: var(--amber-glow);
+}
+
+.vault-btn-logout {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid rgba(168, 162, 158, 0.3);
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.vault-btn-logout:hover {
+  color: #f87171;
+  border-color: #f87171;
+  background: rgba(248, 113, 113, 0.1);
+}
+
+/* Контейнер сторінки */
+.vault-main {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+/* Картка авторизації (Вхід / Реєстрація) */
+.vault-auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 0;
+}
+
+.vault-card {
+  width: 100%;
+  max-width: 480px;
+  background: var(--cask-oak);
+  border: 1px solid var(--border-amber);
+  border-radius: 14px;
+  padding: 44px 36px;
+  box-shadow: var(--shadow-vault);
+  backdrop-filter: blur(12px);
+}
+
+.vault-card__title {
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--amber-glow);
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 10px;
+  letter-spacing: 0.04em;
+}
+
+.vault-card__subtitle {
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 15px;
+  margin-bottom: 32px;
+}
+
+.vault-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.vault-form p {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 15px;
+  color: var(--text-parchment);
+}
+
+.vault-form label {
+  font-weight: 500;
+  color: #e7e5e4;
+}
+
+.vault-form input[type="text"],
+.vault-form input[type="password"],
+.vault-form input[type="number"],
+.vault-form select,
+.vault-form textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(18, 16, 14, 0.85);
+  border: 1px solid rgba(217, 119, 6, 0.25);
+  border-radius: 6px;
+  color: var(--text-parchment);
+  font-size: 16px;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.vault-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.vault-form select {
+  cursor: pointer;
+}
+
+.vault-form input[type="text"]:focus,
+.vault-form input[type="password"]:focus,
+.vault-form input[type="number"]:focus,
+.vault-form select:focus,
+.vault-form textarea:focus {
+  outline: none;
+  border-color: var(--amber-glow);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+  background: rgba(18, 16, 14, 0.95);
+}
+
+.vault-form .helptext {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.vault-form .errorlist {
+  list-style: none;
+  color: #fca5a5;
+  font-size: 13px;
+}
+
+.vault-btn-primary {
+  background: var(--amber-primary);
+  color: #0c0a09;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 12px;
+  width: 100%;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+}
+
+.vault-btn-primary--cta {
+  width: auto;
+  padding: 10px 20px;
+  margin-top: 0;
+}
+
+.vault-toolbar__subtitle {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.wine-card__actions {
+  margin-top: 14px;
+  display: flex;
+  gap: 8px;
+}
+
+.vault-empty-box {
+  max-width: 600px;
+  margin: 40px auto;
+  text-align: center;
+}
+
+.vault-btn-primary:hover {
+  background: var(--amber-glow);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.35);
+}
+
+.vault-card__footer {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.vault-link-highlight {
+  color: var(--amber-glow);
+  text-decoration: underline;
+  margin-left: 6px;
+}
+
+.vault-link-highlight:hover {
+  color: #fde68a;
+}
+
+/* Футер */
+.vault-footer {
+  border-top: 1px solid rgba(217, 119, 6, 0.2);
+  background: rgba(10, 9, 8, 0.95);
+  padding: 24px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-top: auto;
+}
+
+/* Каталог Винного Льоху (Grid & Cards) */
+.vault-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.vault-title {
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--amber-glow);
+  font-size: 32px;
+  letter-spacing: 0.04em;
+}
+
+.vault-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.wine-card {
+  background: var(--cask-oak);
+  border: 1px solid var(--border-amber);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.wine-card:hover {
+  border-color: var(--amber-glow);
+  box-shadow: 0 12px 28px rgba(245, 158, 11, 0.22);
+  background: rgba(36, 32, 29, 0.95);
+}
+
+.wine-card__image-box {
+  width: 100%;
+  height: 360px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  background: var(--cask-oak);
+  border: 1px solid rgba(217, 119, 6, 0.25);
+  display: block;
+}
+
+.wine-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.wine-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.wine-card__title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  color: var(--text-parchment);
+  text-decoration: none;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.wine-card__title:hover {
+  color: var(--amber-glow);
+}
+
+.wine-badge {
+  background: rgba(217, 119, 6, 0.15);
+  color: var(--amber-glow);
+  border: 1px solid var(--border-amber);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.wine-card__winery {
+  color: var(--amber-primary);
+  font-size: 14px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.wine-card__meta {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.wine-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid rgba(217, 119, 6, 0.2);
+  margin-top: auto;
+}
+
+.wine-card__price {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--amber-glow);
+}
+
+.wine-card__rating {
+  font-size: 13px;
+  color: #e7e5e4;
+  background: rgba(127, 29, 29, 0.4);
+  border: 1px solid rgba(127, 29, 29, 0.7);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.vault-btn-sm {
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.vault-btn-sm--edit {
+  color: var(--amber-glow);
+  border: 1px solid var(--border-amber);
+}
+
+.vault-btn-sm--edit:hover {
+  background: rgba(217, 119, 6, 0.2);
+}
+
+.vault-btn-sm--delete {
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.vault-btn-sm--delete:hover {
+  background: rgba(248, 113, 113, 0.15);
+}
+
+/* Детальна картка вина */
+.wine-detail-box {
+  background: var(--cask-oak);
+  border: 1px solid var(--border-amber);
+  border-radius: 14px;
+  padding: 40px;
+  box-shadow: var(--shadow-vault);
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.wine-detail-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 36px;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .wine-detail-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.wine-detail__image-box {
+  background: radial-gradient(circle at center, rgba(32, 28, 24, 0.95) 0%, rgba(12, 10, 9, 0.98) 100%);
+  border: 1px solid var(--border-amber);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+.wine-detail__img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.wine-detail-header {
+  border-bottom: 1px solid var(--border-amber);
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+.wine-detail-notes {
+  background: rgba(18, 16, 14, 0.7);
+  border-left: 3px solid var(--amber-primary);
+  padding: 18px 24px;
+  border-radius: 0 8px 8px 0;
+  margin: 24px 0;
+  line-height: 1.6;
+  color: #e7e5e4;
+  font-style: italic;
+}
+
+/* Пагінація */
+.vault-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.vault-page-link {
+  color: var(--amber-glow);
+  text-decoration: none;
+  border: 1px solid var(--border-amber);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.vault-page-link:hover {
+  background: rgba(217, 119, 6, 0.2);
+}
+
+.vault-page-info {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* Зведена таблиця Куратора */
+.vault-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--cask-oak);
+  border: 1px solid var(--border-amber);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.vault-table th,
+.vault-table td {
+  padding: 14px 18px;
+  text-align: left;
+  border-bottom: 1px solid rgba(217, 119, 6, 0.15);
+  font-size: 14px;
+}
+
+.vault-table th {
+  background: rgba(10, 9, 8, 0.95);
+  color: var(--amber-glow);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.vault-table tr:hover td {
+  background: rgba(217, 119, 6, 0.06);
+}
+
+/* Розширені форми та деталі */
+.vault-card--wide {
+  max-width: 720px;
+}
+
+.vault-card--narrow {
+  max-width: 440px;
+}
+
+.vault-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.vault-btn-secondary {
+  display: inline-block;
+  text-align: center;
+  background: transparent;
+  color: var(--text-parchment);
+  border: 1px solid var(--border-amber);
+  padding: 13px 24px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vault-btn-secondary:hover {
+  background: rgba(217, 119, 6, 0.15);
+  color: var(--amber-glow);
+}
+
+.vault-btn-danger {
+  display: inline-block;
+  text-align: center;
+  background: #dc2626;
+  color: #ffffff;
+  border: 1px solid #b91c1c;
+  padding: 13px 24px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vault-btn-danger:hover {
+  background: #ef4444;
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.35);
+}
+
+.wine-detail-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.wine-detail-meta-item {
+  background: rgba(18, 16, 14, 0.6);
+  border: 1px solid rgba(217, 119, 6, 0.2);
+  border-radius: 8px;
+  padding: 14px 18px;
+}
+
+.wine-detail-label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.wine-detail-value {
+  font-size: 16px;
+  color: var(--text-parchment);
+  font-weight: 600;
+}
+
+.wine-detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(217, 119, 6, 0.2);
+  flex-wrap: wrap;
+}
+
+/* Головний Hero-блок та вітрина маркетплейсу (index.html) */
+.vault-hero {
+  position: relative;
+  background: linear-gradient(180deg, rgba(10, 9, 8, 0.75) 0%, rgba(18, 16, 14, 0.92) 100%),
+              url('../img/cellar_bg.jpg') center/cover no-repeat;
+  border: 1px solid var(--border-amber);
+  border-radius: 14px;
+  padding: 72px 32px;
+  text-align: center;
+  box-shadow: var(--shadow-vault);
+  margin-bottom: 48px;
+}
+
+.vault-hero__title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 42px;
+  color: var(--amber-glow);
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  margin-bottom: 16px;
+  text-shadow: 0 0 24px rgba(245, 158, 11, 0.4);
+}
+
+.vault-hero__subtitle {
+  max-width: 720px;
+  margin: 0 auto 36px auto;
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--text-parchment);
+}
+
+.vault-hero__actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.vault-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 56px;
+}
+
+.vault-feature-item {
+  background: var(--cask-oak);
+  border: 1px solid var(--border-amber);
+  border-radius: 10px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.vault-feature-item__title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  color: var(--amber-glow);
+  margin-bottom: 12px;
+}
+
+.vault-feature-item__text {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.vault-section-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.vault-section-header__title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 32px;
+  color: var(--amber-glow);
+  letter-spacing: 0.03em;
+}
+
+.vault-section-header__subtitle {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-top: 8px;
+}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Мій Винний Льох - WINE VAULT{% endblock %}
+
+{% block content %}
+<div class="vault-toolbar">
+  <div>
+    <h1 class="vault-title">Особистий Винний Льох</h1>
+    <p class="vault-toolbar__subtitle">
+      Колекція авторських вин сомельє {{ user.username }}
+    </p>
+  </div>
+  <a href="{% url 'wine-create' %}" class="vault-btn-primary vault-btn-primary--cta">
+    + Додати новий врожай
+  </a>
+</div>
+
+{% if object_list %}
+  <div class="vault-grid">
+    {% for wine in object_list %}
+      <article class="wine-card">
+        <div>
+          <div class="wine-card__image-box">
+  <img src="{% static wine.get_image_path %}" alt="{{ wine.title }}" class="wine-card__img" loading="lazy">
+</div>
+          <div class="wine-card__top">
+            <a href="{% url 'wine-detail' wine.pk %}" class="wine-card__title">
+              {{ wine.title }}
+            </a>
+            <span class="wine-badge">{{ wine.year }}</span>
+          </div>
+
+          <div class="wine-card__winery">{{ wine.winery }}</div>
+          
+          <div class="wine-card__meta">
+            <div><strong>Регіон:</strong> {{ wine.region }}</div>
+            <div><strong>Сорт:</strong> {{ wine.grape }}</div>
+            <div><strong>Тип:</strong> {{ wine.get_wine_type_display }}</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="wine-card__footer">
+            <span class="wine-card__price">&euro;{{ wine.price }}</span>
+            <span class="wine-card__rating">Рейтинг: {{ wine.rating }}/100</span>
+          </div>
+
+          <div class="wine-card__actions">
+            <a href="{% url 'wine-detail' wine.pk %}" class="vault-btn-sm vault-btn-sm--edit">
+              Паспорт вина
+            </a>
+            <a href="{% url 'wine-update' wine.pk %}" class="vault-btn-sm vault-btn-sm--edit">
+              Редагувати
+            </a>
+            <a href="{% url 'wine-delete' wine.pk %}" class="vault-btn-sm vault-btn-sm--delete">
+              Списати
+            </a>
+          </div>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+
+  <!-- Пагінація CBV -->
+  {% if is_paginated %}
+    <nav class="vault-pagination">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="vault-page-link">&larr; Попередня</a>
+      {% endif %}
+
+      <span class="vault-page-info">
+        Сторінка {{ page_obj.number }} з {{ page_obj.paginator.num_pages }}
+      </span>
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="vault-page-link">Наступна &rarr;</a>
+      {% endif %}
+    </nav>
+  {% endif %}
+
+{% else %}
+  <div class="vault-card vault-empty-box">
+    <h2 class="vault-card__title">Ваш льох поки порожній</h2>
+    <p class="vault-card__subtitle">
+      У вашій приватній колекції ще немає збережених пляшок.
+    </p>
+    <a href="{% url 'wine-create' %}" class="vault-btn-primary">
+      Додати першу пляшку вина
+    </a>
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}WINE VAULT — Глобальний Склеп Авторських Вин{% endblock %}
+
+{% block content %}
+<!-- Головний банер у стилі старовинного винного льоху -->
+<section class="vault-hero">
+  <h1 class="vault-hero__title">WINE VAULT</h1>
+  <p class="vault-hero__subtitle">
+    Цифровий портал до скарбниць незалежних виноробів та сімейних шато.
+    Кожна пляшка у нашому склепі має власний неповторний теруар, лімітований наклад
+    та персональний дегустаційний паспорт від сертифікованого сомельє.
+  </p>
+  <div class="vault-hero__actions">
+    <a href="#vault-showcase" class="vault-btn-primary vault-btn-primary--cta">
+      Переглянути вітрину
+    </a>
+    {% if not user.is_authenticated %}
+      <a href="{% url 'signup' %}" class="vault-btn-secondary">
+        Зареєструвати свій врожай
+      </a>
+    {% else %}
+      <a href="{% url 'wine-list' %}" class="vault-btn-secondary">
+        Мій особистий льох
+      </a>
+    {% endif %}
+  </div>
+</section>
+
+<!-- Філософія та цінності крафтового виноробства -->
+<section class="vault-features">
+  <article class="vault-feature-item">
+    <h3 class="vault-feature-item__title">Автентичний теруар</h3>
+    <p class="vault-feature-item__text">
+      Унікальні ґрунти, мікроклімат історичних схилів Франції, Італії та України.
+      Виноград виключно ручного збору зі старих лоз.
+    </p>
+  </article>
+
+  <article class="vault-feature-item">
+    <h3 class="vault-feature-item__title">Шляхетна витримка</h3>
+    <p class="vault-feature-item__text">
+      Традиційне дозрівання у бочках з вікового французького дуба, природна
+      ферментація та абсолютний спокій кам'яних льохів.
+    </p>
+  </article>
+
+  <article class="vault-feature-item">
+    <h3 class="vault-feature-item__title">Оцінка сомельє</h3>
+    <p class="vault-feature-item__text">
+      Незалежний органолептичний аналіз кожної партії за 100-бальною шкалою
+      з детальними дегустаційними нотатками аромату й смаку.
+    </p>
+  </article>
+</section>
+
+<!-- Публічна вітрина всіх пляшок для гостя та поціновувача -->
+<section id="vault-showcase">
+  <div class="vault-section-header">
+    <h2 class="vault-section-header__title">Колекція Авторських Вин</h2>
+    <p class="vault-section-header__subtitle">
+      Оберіть рідкісний зразок для власної колекції або гастрономічної дегустації
+    </p>
+  </div>
+
+  {% if wines %}
+    <div class="vault-grid">
+      {% for wine in wines %}
+        <article class="wine-card">
+          <div>
+            <div class="wine-card__image-box">
+  <img src="{% static wine.get_image_path %}" alt="{{ wine.title }}" class="wine-card__img" loading="lazy">
+</div>
+            <div class="wine-card__top">
+              <a href="{% url 'wine-detail' wine.pk %}" class="wine-card__title">
+                {{ wine.title }}
+              </a>
+              <span class="wine-badge">{{ wine.year }}</span>
+            </div>
+
+            <div class="wine-card__winery">{{ wine.winery }}</div>
+
+            <div class="wine-card__meta">
+              <div><strong>Регіон:</strong> {{ wine.region }}</div>
+              <div><strong>Сорт:</strong> {{ wine.grape }}</div>
+              <div><strong>Тип:</strong> {{ wine.get_wine_type_display }}</div>
+              <div><strong>Майстер:</strong> {{ wine.sommelier.username }}</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="wine-card__footer">
+              <span class="wine-card__price">&euro;{{ wine.price }}</span>
+              <span class="wine-card__rating">Рейтинг: {{ wine.rating }}/100</span>
+            </div>
+
+            <div class="wine-card__actions">
+              <a href="{% url 'wine-detail' wine.pk %}" class="vault-btn-sm vault-btn-sm--edit">
+                Паспорт вина
+              </a>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+      <div class="vault-pagination">
+        {% if page_obj.has_previous %}
+          <a href="?page={{ page_obj.previous_page_number }}" class="vault-page-link">&larr; Попередня</a>
+        {% endif %}
+
+        <span class="vault-page-info">
+          Сторінка {{ page_obj.number }} з {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}" class="vault-page-link">Наступна &rarr;</a>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% else %}
+    <div class="vault-card vault-empty-box">
+      <h3 class="vault-title">Льох наповнюється</h3>
+      <p class="vault-card__subtitle">
+        Наразі майстри готують нові партії вин до презентації.
+      </p>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

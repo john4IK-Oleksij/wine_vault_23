@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Реєстрація Винороба - WINE VAULT{% endblock %}
+
+{% block content %}
+<div class="vault-auth-container">
+  <div class="vault-card">
+    <h1 class="vault-card__title">Реєстрація Виноробні</h1>
+    <p class="vault-card__subtitle">Створіть власний цифровий льох для авторських вин</p>
+
+    <form method="post" class="vault-form">
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <button type="submit" class="vault-btn-primary">Зареєструвати льох</button>
+    </form>
+
+    <p class="vault-card__footer">
+      Вже маєте обліковий запис?
+      <a href="{% url 'login' %}" class="vault-link-highlight">Увійти</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

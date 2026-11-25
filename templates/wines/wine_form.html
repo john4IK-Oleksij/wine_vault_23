@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if object %}Редагування: {{ object.title }}{% else %}Додати врожай{% endif %} - WINE VAULT
+{% endblock %}
+
+{% block content %}
+<div class="vault-auth-container">
+  <div class="vault-card vault-card--wide">
+    <h1 class="vault-card__title">
+      {% if object %}Редагування пляшки{% else %}Новий врожай у льох{% endif %}
+    </h1>
+    <p class="vault-card__subtitle">
+      {% if object %}
+        Оновіть характеристики або дегустаційні оцінки для {{ object.title }}
+      {% else %}
+        Внесіть параметри пляшки авторського вина до власного дегустаційного реєстру
+      {% endif %}
+    </p>
+
+    <form method="post" class="vault-form" novalidate>
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <div class="vault-form-actions">
+        <button type="submit" class="vault-btn-primary">
+          {% if object %}Зберегти зміни{% else %}Додати пляшку{% endif %}
+        </button>
+        <a href="{% url 'wine-list' %}" class="vault-btn-secondary">Скасувати</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

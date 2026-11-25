@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Зведений Реєстр Куратора - WINE VAULT{% endblock %}
+
+{% block content %}
+<div class="vault-toolbar">
+  <div>
+    <h1 class="vault-title">Зведений Реєстр Куратора</h1>
+    <p class="vault-card__subtitle">Повний огляд винних колекцій усіх сомельє платформи WINE VAULT</p>
+  </div>
+</div>
+
+{% if object_list %}
+  <div class="vault-table-container">
+    <table class="vault-table">
+      <thead>
+        <tr>
+          <th>Назва вина</th>
+          <th>Виноробня</th>
+          <th>Регіон</th>
+          <th>Рік</th>
+          <th>Тип</th>
+          <th>Сорт</th>
+          <th>Оцінка</th>
+          <th>Ціна</th>
+          <th>Сомельє</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for wine in object_list %}
+          <tr>
+            <td>
+              <strong>{{ wine.title }}</strong>
+            </td>
+            <td>{{ wine.winery }}</td>
+            <td>{{ wine.region }}</td>
+            <td>{{ wine.year }}</td>
+            <td><span class="wine-badge">{{ wine.get_wine_type_display }}</span></td>
+            <td>{{ wine.grape }}</td>
+            <td>{{ wine.rating }}/100</td>
+            <td>&euro;{{ wine.price }}</td>
+            <td><strong>{{ wine.sommelier.username }}</strong></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% if is_paginated %}
+    <div class="vault-pagination">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="vault-page-link">&larr; Попередня</a>
+      {% endif %}
+
+      <span class="vault-page-info">
+        Сторінка {{ page_obj.number }} з {{ page_obj.paginator.num_pages }}
+      </span>
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="vault-page-link">Наступна &rarr;</a>
+      {% endif %}
+    </div>
+  {% endif %}
+{% else %}
+  <div class="vault-empty-state">
+    <h2 class="vault-title">Реєстр порожній</h2>
+    <p class="vault-card__subtitle">У колекціях сомельє поки що немає жодної пляшки.</p>
+  </div>
+{% endif %}
+{% endblock %}

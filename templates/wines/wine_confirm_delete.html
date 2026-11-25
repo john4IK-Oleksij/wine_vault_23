@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Списання пляшки: {{ object.title }} - WINE VAULT{% endblock %}
+
+{% block content %}
+<div class="vault-auth-container">
+  <div class="vault-card vault-card--narrow">
+    <h1 class="vault-card__title">Списання вина</h1>
+    <p class="vault-card__subtitle">
+      Підтвердіть вилучення обраної пляшки з вашого дегустаційного реєстру
+    </p>
+
+    <div class="wine-detail-notes">
+      <strong>{{ object.title }}</strong><br>
+      {{ object.winery }}, {{ object.region }} ({{ object.year }} р.)<br>
+      Сорт: {{ object.grape }} | Оцінка: {{ object.rating }}/100
+    </div>
+
+    <form method="post" class="vault-form">
+      {% csrf_token %}
+      <div class="vault-form-actions">
+        <button type="submit" class="vault-btn-danger">Підтвердити списання</button>
+        <a href="{% url 'wine-detail' object.pk %}" class="vault-btn-secondary">Скасувати</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

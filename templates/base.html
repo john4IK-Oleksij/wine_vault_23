@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}WINE VAULT - Винний Склеп Авторських Вин{% endblock %}</title>
+  
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}?v=2">
+  <link rel="stylesheet" href="{% static 'css/vault.css' %}?v=4">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <!-- Шапка сайту -->
+  <header class="vault-header">
+    <div class="vault-nav">
+      <a href="{% url 'index' %}" class="vault-brand">
+        <img src="{% static 'img/logo.png' %}" alt="Logo" class="vault-brand__logo">
+        <span>WINE VAULT</span>
+      </a>
+
+      <nav>
+        <ul class="vault-menu">
+          <li>
+            <a href="{% url 'index' %}" class="vault-link">Вітрина</a>
+          </li>
+          {% if user.is_authenticated %}
+            <!-- Сторінки для авторизованого винороба / сомельє -->
+            <li>
+              <a href="{% url 'wine-list' %}" class="vault-link">Мій льох</a>
+            </li>
+            <li>
+              <a href="{% url 'wine-create' %}" class="vault-link">+ Додати врожай</a>
+            </li>
+
+            <!-- Спеціальний пункт для Головного сомельє / Куратора (RBAC) -->
+            {% if perms.wines.view_all_wines %}
+              <li>
+                <a href="{% url 'cellar-overview' %}" class="vault-link vault-link--curator">
+                  Реєстр Куратора
+                </a>
+              </li>
+            {% endif %}
+
+            <!-- Блок користувача та вихід (через безпечний POST) -->
+            <li class="vault-user-box">
+              <span class="vault-user-badge">
+                Сомельє: <strong>{{ user.username }}</strong>
+              </span>
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="vault-btn-logout">Вийти</button>
+              </form>
+            </li>
+          {% else %}
+            <!-- Для гостей платформи -->
+            <li>
+              <a href="{% url 'login' %}" class="vault-link">Увійти</a>
+            </li>
+            <li>
+              <a href="{% url 'signup' %}" class="vault-link">Реєстрація винороба</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Головна робоча зона -->
+  <main class="vault-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Футер -->
+  <footer class="vault-footer">
+    <p>&copy; 2026 WINE VAULT - Глобальний реєстр та маркетплейс крафтового виноробства. Авторські врожаї обмеженого тиражу.</p>
+  </footer>
+
+</body>
+</html>
