@@ -5,7 +5,7 @@ Global artisan wine marketplace.
 
 import os
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 import dj_database_url
 
@@ -147,3 +147,11 @@ DEFAULT_AUTO_FIELD: str = "django.db.models.BigAutoField"
 LOGIN_URL: str = "login"
 LOGIN_REDIRECT_URL: str = "wine-list"  # після входу сомельє потрапляє у свій винний льох
 LOGOUT_REDIRECT_URL: str = "login"     # після виходу повертаємо на форму входу
+
+# Session Security & Timeout (Обмеження сесії адмінки та сомельє до 24 годин)
+SESSION_COOKIE_AGE: int = 86400  # 24 години в секундах (24 * 60 * 60)
+SESSION_EXPIRE_AT_BROWSER_CLOSE: bool = False
+SESSION_COOKIE_HTTPONLY: bool = True
+SESSION_COOKIE_SECURE: bool = not DEBUG
+SESSION_COOKIE_SAMESITE: Literal["lax", "strict", "none"] = "lax"
+
