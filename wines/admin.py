@@ -29,4 +29,6 @@ class WineAdmin(admin.ModelAdmin):
         "region",
         "grape",
     )
+    list_per_page: int = 25
+    list_select_related: tuple[str, ...] = ("sommelier",)
     ordering: tuple[str, ...] = ("-created_at",)
