@@ -76,7 +76,7 @@ TEMPLATES: list[dict[str, Any]] = [
     },
 ]
 
-WSGI_APPLICATION: str = "config.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 # Database
