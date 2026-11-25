@@ -8,15 +8,27 @@
     <h1 class="vault-card__title">Реєстрація Виноробні</h1>
     <p class="vault-card__subtitle">Створіть власний цифровий льох для авторських вин</p>
 
-    <form method="post" class="vault-form">
+    <form method="post" class="vault-form" novalidate>
       {% csrf_token %}
-      {{ form.as_p }}
+      
+      {% for field in form %}
+        <div class="vault-form-group">
+          <label for="{{ field.id_for_label }}" class="vault-form-label">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}
+            <span class="vault-form-helptext">{{ field.help_text }}</span>
+          {% endif %}
+          {% for error in field.errors %}
+            <span class="vault-form-error">{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% endfor %}
 
       <button type="submit" class="vault-btn-primary">Зареєструвати льох</button>
     </form>
 
     <p class="vault-card__footer">
-      Вже маєте обліковий запис?
+      <span class="vault-card__footer-text">Вже маєте обліковий запис?</span>
       <a href="{% url 'login' %}" class="vault-link-highlight">Увійти</a>
     </p>
   </div>

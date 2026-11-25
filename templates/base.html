@@ -1,64 +1,72 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="uk" class="vault-html">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}WINE VAULT - Винний Склеп Авторських Вин{% endblock %}</title>
   
-  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}?v=2">
-  <link rel="stylesheet" href="{% static 'css/vault.css' %}?v=4">
+  <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}?v=4" class="vault-favicon">
+  <link rel="stylesheet" href="{% static 'css/vault.css' %}?v=9" class="vault-stylesheet">
   {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body class="vault-body">
 
-  <!-- Шапка сайту -->
+  <!-- Шапка сайту з адаптивною навігацією -->
   <header class="vault-header">
     <div class="vault-nav">
       <a href="{% url 'index' %}" class="vault-brand">
         <img src="{% static 'img/logo.png' %}" alt="Logo" class="vault-brand__logo">
-        <span>WINE VAULT</span>
+        <span class="vault-brand__title">WINE VAULT</span>
       </a>
 
-      <nav>
+      <!-- Кнопка бургер-меню для мобільних екранів -->
+      <button class="vault-burger-btn" id="vault-burger-toggle" type="button" aria-label="Відкрити меню" aria-expanded="false">
+        <span class="vault-burger-bar"></span>
+        <span class="vault-burger-bar"></span>
+        <span class="vault-burger-bar"></span>
+      </button>
+
+      <!-- Навігаційне меню (десктопне та розкривне мобільне) -->
+      <nav class="vault-navigation" id="vault-nav-menu">
         <ul class="vault-menu">
-          <li>
+          <li class="vault-menu__item">
             <a href="{% url 'index' %}" class="vault-link">Вітрина</a>
           </li>
           {% if user.is_authenticated %}
             <!-- Сторінки для авторизованого винороба / сомельє -->
-            <li>
+            <li class="vault-menu__item">
               <a href="{% url 'wine-list' %}" class="vault-link">Мій льох</a>
             </li>
-            <li>
+            <li class="vault-menu__item">
               <a href="{% url 'wine-create' %}" class="vault-link">+ Додати врожай</a>
             </li>
 
             <!-- Спеціальний пункт для Головного сомельє / Куратора (RBAC) -->
             {% if perms.wines.view_all_wines %}
-              <li>
+              <li class="vault-menu__item">
                 <a href="{% url 'cellar-overview' %}" class="vault-link vault-link--curator">
-                  Реєстр Куратора
+                  Куратор
                 </a>
               </li>
             {% endif %}
 
             <!-- Блок користувача та вихід (через безпечний POST) -->
-            <li class="vault-user-box">
+            <li class="vault-menu__item vault-user-box">
               <span class="vault-user-badge">
-                Сомельє: <strong>{{ user.username }}</strong>
+                Сомельє: <strong class="vault-user-name">{{ user.username }}</strong>
               </span>
-              <form method="post" action="{% url 'logout' %}">
+              <form method="post" action="{% url 'logout' %}" class="vault-logout-form">
                 {% csrf_token %}
                 <button type="submit" class="vault-btn-logout">Вийти</button>
               </form>
             </li>
           {% else %}
             <!-- Для гостей платформи -->
-            <li>
+            <li class="vault-menu__item">
               <a href="{% url 'login' %}" class="vault-link">Увійти</a>
             </li>
-            <li>
+            <li class="vault-menu__item">
               <a href="{% url 'signup' %}" class="vault-link">Реєстрація винороба</a>
             </li>
           {% endif %}
@@ -74,8 +82,9 @@
 
   <!-- Футер -->
   <footer class="vault-footer">
-    <p>&copy; 2026 WINE VAULT - Глобальний реєстр та маркетплейс крафтового виноробства. Авторські врожаї обмеженого тиражу.</p>
+    <p class="vault-footer__text">&copy; 2026 WINE VAULT - Глобальний реєстр та маркетплейс крафтового виноробства. Авторські врожаї обмеженого тиражу.</p>
   </footer>
 
+  <script src="{% static 'js/vault.js' %}?v=1" class="vault-script"></script>
 </body>
 </html>

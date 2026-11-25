@@ -8,17 +8,29 @@
     <h1 class="vault-card__title">Вхід до Склепу</h1>
     <p class="vault-card__subtitle">Автентифікація сомельє та крафтових виноробів</p>
 
-    <form method="post" class="vault-form">
+    <form method="post" class="vault-form" novalidate>
       {% csrf_token %}
-      {{ form.as_p }}
+      
+      {% for field in form %}
+        <div class="vault-form-group">
+          <label for="{{ field.id_for_label }}" class="vault-form-label">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}
+            <span class="vault-form-helptext">{{ field.help_text }}</span>
+          {% endif %}
+          {% for error in field.errors %}
+            <span class="vault-form-error">{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% endfor %}
 
-      <input type="hidden" name="next" value="{{ next }}">
+      <input type="hidden" name="next" value="{{ next }}" class="vault-form-hidden">
 
       <button type="submit" class="vault-btn-primary">Увійти у сховище</button>
     </form>
 
     <p class="vault-card__footer">
-      Вперше у склепі?
+      <span class="vault-card__footer-text">Вперше у склепі?</span>
       <a href="{% url 'signup' %}" class="vault-link-highlight">Зареєструвати виноробню</a>
     </p>
   </div>

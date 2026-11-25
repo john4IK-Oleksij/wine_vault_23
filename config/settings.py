@@ -129,6 +129,7 @@ USE_TZ: bool = True
 STATIC_URL: str = "static/"
 STATICFILES_DIRS: list[Path] = [BASE_DIR / "static"]
 STATIC_ROOT: Path = BASE_DIR / "staticfiles"
+STATIC_ROOT.mkdir(parents=True, exist_ok=True)
 
 STORAGES: dict[str, dict[str, Any]] = {
     "default": {

@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="vault-toolbar">
-  <div>
+  <div class="vault-toolbar__header">
     <h1 class="vault-title">Зведений Реєстр Куратора</h1>
     <p class="vault-card__subtitle">Повний огляд винних колекцій усіх сомельє платформи WINE VAULT</p>
   </div>
@@ -13,33 +13,33 @@
 {% if object_list %}
   <div class="vault-table-container">
     <table class="vault-table">
-      <thead>
-        <tr>
-          <th>Назва вина</th>
-          <th>Виноробня</th>
-          <th>Регіон</th>
-          <th>Рік</th>
-          <th>Тип</th>
-          <th>Сорт</th>
-          <th>Оцінка</th>
-          <th>Ціна</th>
-          <th>Сомельє</th>
+      <thead class="vault-table-head">
+        <tr class="vault-table-row">
+          <th class="vault-table-th">Назва вина</th>
+          <th class="vault-table-th">Виноробня</th>
+          <th class="vault-table-th">Регіон</th>
+          <th class="vault-table-th">Рік</th>
+          <th class="vault-table-th">Тип</th>
+          <th class="vault-table-th">Сорт</th>
+          <th class="vault-table-th">Оцінка</th>
+          <th class="vault-table-th">Ціна</th>
+          <th class="vault-table-th">Сомельє</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="vault-table-body">
         {% for wine in object_list %}
-          <tr>
-            <td>
-              <strong>{{ wine.title }}</strong>
+          <tr class="vault-table-row">
+            <td class="vault-table-td">
+              <strong class="vault-table-title">{{ wine.title }}</strong>
             </td>
-            <td>{{ wine.winery }}</td>
-            <td>{{ wine.region }}</td>
-            <td>{{ wine.year }}</td>
-            <td><span class="wine-badge">{{ wine.get_wine_type_display }}</span></td>
-            <td>{{ wine.grape }}</td>
-            <td>{{ wine.rating }}/100</td>
-            <td>&euro;{{ wine.price }}</td>
-            <td><strong>{{ wine.sommelier.username }}</strong></td>
+            <td class="vault-table-td">{{ wine.winery }}</td>
+            <td class="vault-table-td">{{ wine.region }}</td>
+            <td class="vault-table-td">{{ wine.year }}</td>
+            <td class="vault-table-td"><span class="wine-badge">{{ wine.get_wine_type_display }}</span></td>
+            <td class="vault-table-td">{{ wine.grape }}</td>
+            <td class="vault-table-td">{{ wine.rating }}/100</td>
+            <td class="vault-table-td">&euro;{{ wine.price }}</td>
+            <td class="vault-table-td"><strong class="vault-table-sommelier">{{ wine.sommelier.username }}</strong></td>
           </tr>
         {% endfor %}
       </tbody>
@@ -47,7 +47,7 @@
   </div>
 
   {% if is_paginated %}
-    <div class="vault-pagination">
+    <nav class="vault-pagination">
       {% if page_obj.has_previous %}
         <a href="?page={{ page_obj.previous_page_number }}" class="vault-page-link">&larr; Попередня</a>
       {% endif %}
@@ -59,7 +59,7 @@
       {% if page_obj.has_next %}
         <a href="?page={{ page_obj.next_page_number }}" class="vault-page-link">Наступна &rarr;</a>
       {% endif %}
-    </div>
+    </nav>
   {% endif %}
 {% else %}
   <div class="vault-empty-state">

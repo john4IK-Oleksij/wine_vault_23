@@ -56,7 +56,7 @@
 </section>
 
 <!-- Публічна вітрина всіх пляшок для гостя та поціновувача -->
-<section id="vault-showcase">
+<section id="vault-showcase" class="vault-showcase">
   <div class="vault-section-header">
     <h2 class="vault-section-header__title">Колекція Авторських Вин</h2>
     <p class="vault-section-header__subtitle">
@@ -68,10 +68,10 @@
     <div class="vault-grid">
       {% for wine in wines %}
         <article class="wine-card">
-          <div>
+          <div class="wine-card__main">
             <div class="wine-card__image-box">
-  <img src="{% static wine.get_image_path %}" alt="{{ wine.title }}" class="wine-card__img" loading="lazy">
-</div>
+              <img src="{% static wine.get_image_path %}" alt="{{ wine.title }}" class="wine-card__img" loading="lazy">
+            </div>
             <div class="wine-card__top">
               <a href="{% url 'wine-detail' wine.pk %}" class="wine-card__title">
                 {{ wine.title }}
@@ -82,14 +82,26 @@
             <div class="wine-card__winery">{{ wine.winery }}</div>
 
             <div class="wine-card__meta">
-              <div><strong>Регіон:</strong> {{ wine.region }}</div>
-              <div><strong>Сорт:</strong> {{ wine.grape }}</div>
-              <div><strong>Тип:</strong> {{ wine.get_wine_type_display }}</div>
-              <div><strong>Майстер:</strong> {{ wine.sommelier.username }}</div>
+              <div class="wine-card__meta-item">
+                <strong class="wine-card__meta-label">Регіон:</strong>
+                <span class="wine-card__meta-value">{{ wine.region }}</span>
+              </div>
+              <div class="wine-card__meta-item">
+                <strong class="wine-card__meta-label">Сорт:</strong>
+                <span class="wine-card__meta-value">{{ wine.grape }}</span>
+              </div>
+              <div class="wine-card__meta-item">
+                <strong class="wine-card__meta-label">Тип:</strong>
+                <span class="wine-card__meta-value">{{ wine.get_wine_type_display }}</span>
+              </div>
+              <div class="wine-card__meta-item">
+                <strong class="wine-card__meta-label">Майстер:</strong>
+                <span class="wine-card__meta-value">{{ wine.sommelier.username }}</span>
+              </div>
             </div>
           </div>
 
-          <div>
+          <div class="wine-card__footer-box">
             <div class="wine-card__footer">
               <span class="wine-card__price">&euro;{{ wine.price }}</span>
               <span class="wine-card__rating">Рейтинг: {{ wine.rating }}/100</span>
@@ -106,7 +118,7 @@
     </div>
 
     {% if is_paginated %}
-      <div class="vault-pagination">
+      <nav class="vault-pagination">
         {% if page_obj.has_previous %}
           <a href="?page={{ page_obj.previous_page_number }}" class="vault-page-link">&larr; Попередня</a>
         {% endif %}
@@ -118,12 +130,12 @@
         {% if page_obj.has_next %}
           <a href="?page={{ page_obj.next_page_number }}" class="vault-page-link">Наступна &rarr;</a>
         {% endif %}
-      </div>
+      </nav>
     {% endif %}
   {% else %}
     <div class="vault-card vault-empty-box">
-      <h3 class="vault-title">Льох наповнюється</h3>
-      <p class="vault-card__subtitle">
+      <h3 class="vault-empty-box__title">Льох наповнюється</h3>
+      <p class="vault-empty-box__text">
         Наразі майстри готують нові партії вин до презентації.
       </p>
     </div>

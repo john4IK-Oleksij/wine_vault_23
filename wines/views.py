@@ -9,21 +9,9 @@ from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views import generic
 
+from .forms import WineForm
 from .mixins import OwnedWineMixin
 from .models import Wine
-
-WINE_FIELDS = (
-    "title",
-    "winery",
-    "region",
-    "year",
-    "wine_type",
-    "grape",
-    "price",
-    "tasting_notes",
-    "rating",
-    "image",
-)
 
 
 class MarketplaceIndexView(generic.ListView):
@@ -53,26 +41,25 @@ class WineCreateView(OwnedWineMixin, generic.CreateView):
     """Додавання нової пляшки до своєї колекції"""
 
     model = Wine
-    fields = WINE_FIELDS
+    form_class = WineForm
     template_name = "wines/wine_form.html"
 
     def form_valid(self, form: BaseModelForm[Wine]) -> HttpResponse:
         # Безпека: автор-сомельє призначається строго сервером з сесії
-        user = cast(User, self.request.user)
-        form.instance.sommelier = user
+        form.instance.sommelier = cast(User, self.request.user)
         return super().form_valid(form)  # pyright: ignore[reportUnknownMemberType]
 
 
 class WineUpdateView(OwnedWineMixin, generic.UpdateView):
-    """Редагування характеристик своєї пляшки"""
+    """Редагування пляшки у власному льоху"""
 
     model = Wine
-    fields = WINE_FIELDS
+    form_class = WineForm
     template_name = "wines/wine_form.html"
 
 
 class WineDeleteView(OwnedWineMixin, generic.DeleteView):
-    """Списання пляшки з колекції"""
+    """Списання вина з власного льоху"""
 
     model = Wine
     template_name = "wines/wine_confirm_delete.html"
@@ -80,12 +67,9 @@ class WineDeleteView(OwnedWineMixin, generic.DeleteView):
 
 
 class CellarOverviewView(PermissionRequiredMixin, generic.ListView):
-    """
-    Зведена відомість для Головного сомельє / Куратора:
-    Показує вина ВСІХ сомельє завдяки праву wines.view_all_wines
-    """
+    """Зведений реєстр для Головного сомельє / Куратора винного дому"""
 
-    permission_required = "wines.view_all_wines"
-    queryset = Wine.objects.select_related("sommelier")
+    model = Wine
     template_name = "wines/cellar_overview.html"
-    paginate_by = 12
+    permission_required = "wines.view_all_wines"
+    paginate_by = 15

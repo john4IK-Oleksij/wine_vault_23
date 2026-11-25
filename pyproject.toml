@@ -31,4 +31,5 @@ ignore = [
     "RUF001",  # Ambiguous Cyrillic character in string
     "RUF002",  # Ambiguous Cyrillic character in docstring
     "RUF003",  # Ambiguous Cyrillic character in comment
+    "RUF012",  # Mutable class attributes in Django Meta
 ]

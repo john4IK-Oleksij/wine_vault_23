@@ -11,9 +11,9 @@
     </p>
 
     <div class="wine-detail-notes">
-      <strong>{{ object.title }}</strong><br>
-      {{ object.winery }}, {{ object.region }} ({{ object.year }} р.)<br>
-      Сорт: {{ object.grape }} | Оцінка: {{ object.rating }}/100
+      <strong class="wine-delete-preview-title">{{ object.title }}</strong>
+      <p class="wine-delete-preview-info">{{ object.winery }}, {{ object.region }} ({{ object.year }} р.)</p>
+      <p class="wine-delete-preview-info">Сорт: {{ object.grape }} | Оцінка: {{ object.rating }}/100</p>
     </div>
 
     <form method="post" class="vault-form">

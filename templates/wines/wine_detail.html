@@ -17,7 +17,10 @@
           <span class="wine-badge">{{ wine.get_wine_type_display }}</span>
         </div>
         <div class="wine-card__winery">{{ wine.winery }}</div>
-        <div class="wine-card__meta">{{ wine.region }} | Врожай: {{ wine.year }} р.</div>
+        <div class="wine-card__meta">
+          <span class="wine-detail-header__region">{{ wine.region }}</span> | 
+          <span class="wine-detail-header__harvest">Врожай: {{ wine.year }} р.</span>
+        </div>
       </div>
 
       <div class="wine-detail-meta-grid">
@@ -42,7 +45,7 @@
       {% if wine.tasting_notes %}
         <div class="wine-detail-notes">
           <span class="wine-detail-label">Дегустаційні нотатки</span>
-          <p>{{ wine.tasting_notes|linebreaksbr }}</p>
+          <p class="wine-detail-notes__text">{{ wine.tasting_notes|linebreaksbr }}</p>
         </div>
       {% endif %}
 

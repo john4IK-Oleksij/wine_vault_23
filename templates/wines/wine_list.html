@@ -5,7 +5,7 @@
 
 {% block content %}
 <div class="vault-toolbar">
-  <div>
+  <div class="vault-toolbar__header">
     <h1 class="vault-title">Особистий Винний Льох</h1>
     <p class="vault-toolbar__subtitle">
       Колекція авторських вин сомельє {{ user.username }}
@@ -20,10 +20,10 @@
   <div class="vault-grid">
     {% for wine in object_list %}
       <article class="wine-card">
-        <div>
+        <div class="wine-card__main">
           <div class="wine-card__image-box">
-  <img src="{% static wine.get_image_path %}" alt="{{ wine.title }}" class="wine-card__img" loading="lazy">
-</div>
+            <img src="{% static wine.get_image_path %}" alt="{{ wine.title }}" class="wine-card__img" loading="lazy">
+          </div>
           <div class="wine-card__top">
             <a href="{% url 'wine-detail' wine.pk %}" class="wine-card__title">
               {{ wine.title }}
@@ -34,13 +34,22 @@
           <div class="wine-card__winery">{{ wine.winery }}</div>
           
           <div class="wine-card__meta">
-            <div><strong>Регіон:</strong> {{ wine.region }}</div>
-            <div><strong>Сорт:</strong> {{ wine.grape }}</div>
-            <div><strong>Тип:</strong> {{ wine.get_wine_type_display }}</div>
+            <div class="wine-card__meta-item">
+              <strong class="wine-card__meta-label">Регіон:</strong>
+              <span class="wine-card__meta-value">{{ wine.region }}</span>
+            </div>
+            <div class="wine-card__meta-item">
+              <strong class="wine-card__meta-label">Сорт:</strong>
+              <span class="wine-card__meta-value">{{ wine.grape }}</span>
+            </div>
+            <div class="wine-card__meta-item">
+              <strong class="wine-card__meta-label">Тип:</strong>
+              <span class="wine-card__meta-value">{{ wine.get_wine_type_display }}</span>
+            </div>
           </div>
         </div>
 
-        <div>
+        <div class="wine-card__footer-box">
           <div class="wine-card__footer">
             <span class="wine-card__price">&euro;{{ wine.price }}</span>
             <span class="wine-card__rating">Рейтинг: {{ wine.rating }}/100</span>
