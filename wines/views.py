@@ -22,16 +22,6 @@ class MarketplaceIndexView(generic.ListView):
     context_object_name = "wines"
     paginate_by = 6
 
-    def get_queryset(self):
-        if not Wine.objects.exists():
-            try:
-                from django.core.management import call_command
-
-                call_command("loaddata", "initial_data.json")
-            except Exception:
-                pass
-        return super().get_queryset()
-
 
 class WineListView(OwnedWineMixin, generic.ListView):
     """Каталог особистого винного льоху сомельє"""
