@@ -12,6 +12,21 @@ import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
+# Load environment variables from .env if present
+env_file = BASE_DIR / ".env"
+if env_file.exists():
+    try:
+        from dotenv import load_dotenv
+
+        load_dotenv(env_file)
+    except ImportError:
+        with open(env_file, encoding="utf-8") as _f:
+            for _line in _f:
+                _line = _line.strip()
+                if _line and not _line.startswith("#") and "=" in _line:
+                    _k, _v = _line.split("=", 1)
+                    os.environ.setdefault(_k.strip(), _v.strip())
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY: str = os.getenv(
     "SECRET_KEY",
